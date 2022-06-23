@@ -25,7 +25,9 @@
                     <form class="needs-validation" method="post">
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <button class="w-50 btn btn-primary btn-lg" type="submit">Start</button>
+                        <button class="w-50 btn btn-primary btn-lg" type="submit">
+                            {% if button_name  %} {{ button_name }} {% else %} button {% endif %}
+                        </button>
                     </form>
                 </div>
 
@@ -41,15 +43,29 @@
 
             <br><br>
             <div class="row">
-                <h6>Submitted exams</h6>
-
+                
                 {% if submitted_exams %}
+                <h6>Submitted exams</h6>
                 {% for exam in submitted_exams %}
                 <li>{{ exam.name }}</li>
                 {% endfor %}
                 {% endif %}
 
             </div>
+
+
+            {% if question_list %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                {% for question in question_list %}
+                  <li class="page-item">
+                    <a class="page-link" href="{% url 'question' exam_id=question.exam.id question_id=question.id %}">{{question.id}}</a>
+                </li>
+                {% endfor %}
+                </ul>
+            </nav>
+            
+            {% endif %}
 
         </main>
     </div>
